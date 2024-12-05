@@ -3,6 +3,9 @@ const express = require("express");
 const { Pool } = require("pg");
 require("dotenv").config();
 
+const providerRouter = require("./routes/providerRouter");
+const clientRouter = require("./routes/clientRouter");
+
 const app = express();
 const port = 5173;
 
@@ -29,6 +32,10 @@ app.get("/", async (req, res) => {
     res.status(500).send("Database not connected");
   }
 });
+
+// use routers
+app.use("/api/v1/providers", providerRouter);
+app.use("/api/v1/clients", clientRouter);
 
 // catch all for non-existent routes (404)
 app.use((req, res, next) => {
