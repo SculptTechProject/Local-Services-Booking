@@ -1,16 +1,22 @@
 const express = require("express");
 const pool = require("./db");
 require("dotenv").config();
+const cors = require("cors");
 
 const providerRouter = require("./routes/providerRouter");
 const clientRouter = require("./routes/clientRouter");
 
 const app = express();
-const port = 5173;
+const port = process.env.PORT;
+
+// Middleware
+const corsOptions = {
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
 app.use(express.json());
-
-const router = express.Router()
 
 // check if server and db is working
 app.get("/", async (req, res) => {
