@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
-let providers = [];
+const bcrypt = require("bcrypt");
 
 // Register provider
 router.post("/register", async (req, res) => {
@@ -12,9 +11,7 @@ router.post("/register", async (req, res) => {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  // Save provider to database
-  providers.push({ id: providers.length + 1, name, email, password });
-  res.status(201).json({ message: "Provider registered successfully" });
+  
 });
 
 // Login provider

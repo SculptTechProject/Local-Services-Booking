@@ -1,6 +1,5 @@
-const fs = require("fs");
 const express = require("express");
-const { Pool } = require("pg");
+const pool = require("./db");
 require("dotenv").config();
 
 const providerRouter = require("./routes/providerRouter");
@@ -12,15 +11,6 @@ const port = 5173;
 app.use(express.json());
 
 const router = express.Router()
-
-// connect to database
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    require: true,
-    ca: fs.readFileSync("certs/ca.pem").toString(),
-  },
-});
 
 // check if server and db is working
 app.get("/", async (req, res) => {

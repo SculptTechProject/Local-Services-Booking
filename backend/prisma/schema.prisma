@@ -32,7 +32,7 @@ model Client {
   id         Int      @id @default(autoincrement())
   name       String   @db.VarChar(100)
   email      String   @unique @db.VarChar(255)
-  password   String
+  password   String   
   bookings   Booking[]
   createdAt  DateTime @default(now())
   @@index([email])
@@ -41,6 +41,7 @@ model Client {
 model Service {
   id          Int      @id @default(autoincrement())
   name        String
+  number      Int
   description String    @db.VarChar(5000)
   price       Float
   providerId  Int
