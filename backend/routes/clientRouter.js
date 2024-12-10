@@ -3,7 +3,7 @@ const router = express.Router();
 const pool = require("../db");
 const bcrypt = require("bcrypt");
 
-// Get clients
+// Get all clients
 router.get("/fetchusers", async (req, res) => {
   try {
     const result = await pool.query(`SELECT * FROM "Client";`);
@@ -35,7 +35,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Delete client by ID
 // Delete client by ID
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
