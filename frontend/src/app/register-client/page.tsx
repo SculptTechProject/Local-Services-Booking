@@ -1,10 +1,9 @@
 "use client";
-import { useRouter } from 'next/navigation';
+import router from "next/router";
 import { useState } from "react";
 import React from "react";
 
 export default function LoginClient() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -16,7 +15,7 @@ export default function LoginClient() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5173/api/v1/clients/login", {
+      const res = await fetch("http://localhost:5173/api/v1/clients/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,13 +26,13 @@ export default function LoginClient() {
 
       if (!res.ok) {
         const { error } = await res.json();
-        throw new Error(error || "Błąd logowania");
+        throw new Error(error || "Błąd rejestracji");
       }
 
       const data = await res.json();
-      console.log("Zalogowano pomyślnie:", data);
-      router.push("/dashboard-client");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      console.log("Zarejestrowano pomyślnie:", data);
+      router.push("/dashboard");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -45,7 +44,7 @@ export default function LoginClient() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 via-gray-100 to-emerald-100">
       <div className="max-w-md w-full bg-white p-10 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold text-emerald-700 mb-6 text-center">
-          Zaloguj się
+          Rejestracja
         </h1>
         <form onSubmit={handleSubmit} className="space-y-5">
           {error && (
@@ -94,13 +93,16 @@ export default function LoginClient() {
               loading ? "opacity-75 cursor-not-allowed" : ""
             }`}
           >
-            {loading ? "Logowanie..." : "Zaloguj się"}
+            {loading ? "Rejestrowanie..." : "Zarejestruj się"}
           </button>
         </form>
         <p className="text-center mt-4 text-sm text-gray-600">
-          Nie masz konta?{" "}
-          <a href="/register-client" className="text-emerald-700 hover:underline">
-            Zarejestruj się
+          Masz już konto?{" "}
+          <a
+            href="/login-client"
+            className="text-emerald-700 hover:underline"
+          >
+            Zaloguj się
           </a>
         </p>
       </div>

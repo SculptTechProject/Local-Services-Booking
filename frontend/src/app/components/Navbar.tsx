@@ -22,30 +22,23 @@ function Navbar() {
 
   return (
     <nav
-      className="sticky top-0 bg-sky-800 border-b border-b-gray-700 z-50"
+      className="sticky top-0 bg-slate-100 border-b border-b-gray-200 z-50"
       data-aos="fade-down"
     >
       <div className="max-w-screen-xl mx-auto px-4 sm:px-8 flex justify-between items-center h-24">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3">
-          <Image
-            src="/logoo.svg"
-            alt="Logo"
-            width={80}
-            height={80}
-            className="svg-white"
-            style={{
-              filter: "brightness(0) invert(1)",
-            }}
-          />
-          <span className="text-white font-bold text-lg">Local Services</span>
+          <Image src="/logoo.svg" alt="Logo" width={80} height={80} />
+          <span className="text-gray-700 font-bold text-lg">
+            Local Services
+          </span>
         </Link>
 
         {/* Navigation Links */}
         <ul
           className={`lg:flex lg:flex-row items-center gap-6 lg:static lg:w-auto lg:h-auto ${
             isOpen
-              ? "absolute flex flex-col justify-center top-24 left-0 w-full h-[calc(100vh-6rem)] bg-sky-800"
+              ? "absolute flex flex-col justify-center top-24 left-0 w-full h-[calc(100vh-6rem)] bg-slate-200"
               : "hidden"
           }`}
         >
@@ -53,7 +46,7 @@ function Navbar() {
             <Link
               href="/login-client"
               onClick={handleCloseMenu}
-              className="block text-base font-bold px-5 py-2 text-teal-100 hover:text-indigo-300 transition-all duration-30"
+              className="block text-base font-bold px-5 py-2 text-gray-700 hover:text-indigo-300 transition-all duration-30"
             >
               Client Login
             </Link>
@@ -62,7 +55,7 @@ function Navbar() {
             <Link
               href="/login-provider"
               onClick={handleCloseMenu}
-              className="block text-base font-bold px-5 py-2 text-teal-100 hover:text-indigo-300 transition-all duration-30"
+              className="block text-base font-bold px-5 py-2 text-gray-700 hover:text-indigo-300 transition-all duration-30"
             >
               Provider Login
             </Link>
@@ -71,7 +64,7 @@ function Navbar() {
             <Link
               href="/popular-providers"
               onClick={handleCloseMenu}
-              className="block text-base font-semibold px-5 py-2 text-gray-200 hover:text-indigo-300 transition-all duration-300"
+              className="block text-base font-semibold px-5 py-2 text-gray-700 hover:text-indigo-300 transition-all duration-300"
             >
               Popular Providers
             </Link>
@@ -80,7 +73,7 @@ function Navbar() {
             <Link
               href="/categories"
               onClick={handleCloseMenu}
-              className="block text-base font-semibold px-5 py-2 text-gray-200 hover:text-indigo-300 transition-all duration-300"
+              className="block text-base font-semibold px-5 py-2 text-gray-700 hover:text-indigo-300 transition-all duration-300"
             >
               Categories
             </Link>
@@ -89,7 +82,7 @@ function Navbar() {
             <Link
               href="/contact"
               onClick={handleCloseMenu}
-              className="block text-base font-semibold px-5 py-2 text-gray-200 hover:text-indigo-300 transition-all duration-300"
+              className="block text-base font-semibold px-5 py-2 text-gray-700 hover:text-indigo-300 transition-all duration-300"
             >
               Contact Us
             </Link>
@@ -104,18 +97,18 @@ function Navbar() {
           data-aos="fade-down"
         >
           <span
-            className={`h-0.5 w-8 bg-sky-200 rounded-lg transition-transform ${
+            className={`h-0.5 w-8 bg-gray-700 rounded-lg transition-transform ${
               isOpen ? "rotate-45 translate-y-2" : ""
             }`}
           ></span>
           <span
-            className={`h-0.5 w-8 bg-gray-200 rounded-lg transition-opacity ${
+            className={`h-0.5 w-8 bg-gray-700 rounded-lg transition-opacity ${
               isOpen ? "opacity-0" : ""
             }`}
           ></span>
           <span
-            className={`h-0.5 w-8 bg-gray-200 rounded-lg transition-transform ${
-              isOpen ? "-rotate-45 -translate-y-2" : ""
+            className={`h-0.5 w-8 bg-gray-700 rounded-lg transition-transform ${
+              isOpen ? "-rotate-45 -translate-y-3" : ""
             }`}
           ></span>
         </button>
