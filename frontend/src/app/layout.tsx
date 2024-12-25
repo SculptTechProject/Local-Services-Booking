@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./styles/globals.css";
-import Navbar from "./components/Navbar";
 import AOSInitializer from "./components/AOSInitializer";
 
 
@@ -18,7 +17,6 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AOSInitializer/>
-        <Navbar/>
         {children}
       </body>
     </html>

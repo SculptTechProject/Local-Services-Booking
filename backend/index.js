@@ -2,12 +2,15 @@ const express = require("express");
 const pool = require("./db");
 require("dotenv").config();
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 
 const providerRouter = require("./routes/providerRouter");
 const clientRouter = require("./routes/clientRouter");
 
 const app = express();
 const port = process.env.PORT;
+app.use(cookieParser());
 
 // Middleware
 const corsOptions = {

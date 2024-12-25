@@ -1,7 +1,47 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Logout from "../components/Logout";
 
-export default function dashboardClient() {
-  const clientName = "Mati";
+interface User {
+  name: string;
+}
+
+export default function DashboardClient() {
+  const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("http://localhost:5173/api/v1/clients/me", {
+      method: "GET",
+      credentials: "include", // wysyłamy token w ciasteczkach
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          // np. brak tokena, nieprawidłowy token itp.
+          throw new Error("Unauthorized");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setUser(data.user);
+      })
+      .catch(() => {
+        // wywal na stronę logowania
+        router.push("/login-client");
+      })
+      .finally(() => setLoading(false));
+  }, [router]);
+
+  if (loading) {
+    return <div>Ładowanie...</div>;
+  }
+
+  if (!user) {
+    return null;
+  }
+
   const services = [
     { name: "Sprzątanie", status: "Zarezerwowane", date: "2024-12-15" },
     {
@@ -18,14 +58,15 @@ export default function dashboardClient() {
       <header className="flex items-center justify-between mb-8">
         <h1 className="text-2xl font-bold text-emerald-700">Panel Klienta</h1>
         <div className="text-gray-700">
-          Zalogowany jako: <span className="font-semibold">{clientName}</span>
+          Zalogowany jako: <span className="font-semibold">{user.name}</span>
         </div>
+        <Logout />
       </header>
 
       {/* Sekcja powitalna */}
       <section className="mb-8 bg-white p-6 rounded shadow">
         <h2 className="text-xl font-semibold text-emerald-700 mb-2">
-          Witaj, {clientName}!
+          Witaj, {user.name}!
         </h2>
         <p className="text-gray-600">
           Tutaj znajdziesz swoje ostatnie rezerwacje, statusy usług oraz

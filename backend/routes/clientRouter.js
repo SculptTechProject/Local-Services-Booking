@@ -2,6 +2,36 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../db");
 const bcrypt = require("bcrypt");
+const authMiddleware = require("../middleware/middleware.js");
+const jwt = require("jsonwebtoken");
+
+// Get current client
+router.get("/me", authMiddleware, async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const result = await pool.query(`SELECT * FROM "Client" WHERE id = $1;`, [
+      userId,
+    ]);
+
+    const user = result.rows[0];
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ user });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Database error" });
+  }
+});
+
+// Logout client
+router.post("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.json({ message: "Logged out" });
+});
 
 // Get all clients
 router.get("/fetchusers", async (req, res) => {
@@ -68,6 +98,18 @@ router.post("/register", async (req, res) => {
   }
 
   try {
+    // Sprawdzenie czy uzytkownik istnieje
+    const existingUser = await pool.query(
+      `SELECT * FROM "Client" WHERE email = $1;`,
+      [email]
+    );
+
+    if (existingUser.rows.length > 0) {
+      return res
+        .status(409)
+        .json({ message: "User with that email already exists" });
+    }
+
     // Haszowanie hasła
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -101,13 +143,31 @@ router.post("/login", async (req, res) => {
     const user = result.rows[0];
 
     if (!user) {
-      res.status(401).json({ message: "Invalid email" });
+      return res.status(401).json({ message: "Invalid email" });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
-      res.status(401).json({ message: "Invalid password" });
+      return res.status(401).json({ message: "Invalid password" });
     }
+
+    const token = jwt.sign(
+      {
+        id: user.id,
+        name: user.name,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    )
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false, // do zmiany na true w przypadku https
+      sameSite: "strict",
+      maxAge: 3600000,
+    });
 
     res.status(200).json({
       message: "Login successful",

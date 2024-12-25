@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import AOS from "aos";
+import "../styles/navbar.css";
 
 
 function Navbar() {
@@ -22,7 +23,7 @@ function Navbar() {
 
   return (
     <nav
-      className="sticky top-0 bg-slate-100 border-b border-b-gray-200 z-50"
+      className="bgnavcolor sticky top-0 border-b border-b-gray-200 z-50"
       data-aos="fade-down"
     >
       <div className="max-w-screen-xl mx-auto px-4 sm:px-8 flex justify-between items-center h-24">
@@ -38,7 +39,7 @@ function Navbar() {
         <ul
           className={`lg:flex lg:flex-row items-center gap-6 lg:static lg:w-auto lg:h-auto ${
             isOpen
-              ? "absolute flex flex-col justify-center top-24 left-0 w-full h-[calc(100vh-6rem)] bg-slate-200"
+              ? "absolute flex flex-col justify-center top-24 left-0 w-full h-[calc(100vh-6rem)] bgnavcolorMobile"
               : "hidden"
           }`}
         >
