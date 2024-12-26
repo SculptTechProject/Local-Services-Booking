@@ -31,7 +31,7 @@ export default function LoginClient() {
       const data = await res.json();
       console.log("Zalogowano pomyślnie:", data);
       router.push("/dashboard-client");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message);
     } finally {

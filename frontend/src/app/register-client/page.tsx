@@ -39,7 +39,7 @@ export default function RegisterClient() {
       const data = await res.json();
       console.log("Zarejestrowano pomyślnie:", data);
       router.push("/login-client");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message);
     } finally {

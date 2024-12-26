@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 
 const providerRouter = require("./routes/providerRouter");
 const clientRouter = require("./routes/clientRouter");
+const postRouter = require("./routes/postRouter");
 
 const app = express();
 const port = process.env.PORT;
@@ -36,6 +37,7 @@ app.get("/", async (req, res) => {
 // use routers
 app.use("/api/v1/providers", providerRouter);
 app.use("/api/v1/clients", clientRouter);
+app.use("/api/v1/posts", postRouter);
 
 // catch all for non-existent routes (404)
 app.use((req, res, next) => {

@@ -17,12 +17,15 @@ export default function RegisterProvider() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5173/api/v1/providers/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
-        credentials: "include",
-      });
+      const res = await fetch(
+        "http://localhost:5173/api/v1/providers/register",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password }),
+          credentials: "include",
+        }
+      );
 
       if (res.status === 409) {
         const { error } = await res.json();
@@ -39,10 +42,10 @@ export default function RegisterProvider() {
       const data = await res.json();
       console.log("Zarejestrowano pomyślnie:", data);
       router.push("/preregister-provider");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    }catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
       setError(err.message);
-    }finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -123,7 +126,10 @@ export default function RegisterProvider() {
             Masz już konto?{" "}
             <a
               href="/login-provider"
-              className="font-medium text-indigo-600 hover:text-indigo-500">Zaloguj się!</a>
+              className="font-medium text-indigo-600 hover:text-indigo-500"
+            >
+              Zaloguj się!
+            </a>
           </p>
         </div>
       </div>

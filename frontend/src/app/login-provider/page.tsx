@@ -98,8 +98,15 @@ export default function LoginProvider() {
               {loading ? "Logowanie..." : "Zaloguj się"}
             </button>
           </form>
-          <p className="text-center text-sm text-gray-600">Nie masz konta? 
-            <a href="/register-provider" className="font-medium text-indigo-600 hover:text-indigo-500"> Zarejestruj się!</a>
+          <p className="text-center text-sm text-gray-600">
+            Nie masz konta?
+            <a
+              href="/register-provider"
+              className="font-medium text-indigo-600 hover:text-indigo-500"
+            >
+              {" "}
+              Zarejestruj się!
+            </a>
           </p>
         </div>
       </div>

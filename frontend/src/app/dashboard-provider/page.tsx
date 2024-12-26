@@ -25,6 +25,13 @@ ChartJS.register(
   Legend
 );
 
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+  createdAt: string;
+}
+
 interface Provider {
   name: string;
   region: string;
@@ -33,9 +40,20 @@ interface Provider {
 
 export default function ProviderDashboard() {
   const router = useRouter();
+  const [posts, setPosts] = useState<Post[]>([]);
   const [provider, setProvider] = useState<Provider | null>(null);
   const [loading, setLoading] = useState(true);
   const currentYear = new Date().getFullYear();
+
+  useEffect(() => {
+    fetch("http://localhost:5173/api/v1/posts", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => setPosts(data.posts))
+      .catch((err) => console.error(err));
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -84,7 +102,20 @@ export default function ProviderDashboard() {
 
   const chartData = {
     year: currentYear,
-    labels: ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"],
+    labels: [
+      "Styczeń",
+      "Luty",
+      "Marzec",
+      "Kwiecień",
+      "Maj",
+      "Czerwiec",
+      "Lipiec",
+      "Sierpień",
+      "Wrzesień",
+      "Październik",
+      "Listopad",
+      "Grudzień",
+    ],
     datasets: [
       {
         label: "Monthly Bookings",
@@ -191,6 +222,27 @@ export default function ProviderDashboard() {
             </li>
           ))}
         </ul>
+      </div>
+
+      {/* Twoje posty */}
+      <div>
+        <h2 className="text-lg font-semibold mb-4">Twoje posty</h2>
+        {posts && posts.length > 0 ? (
+          posts.map((post) => (
+            <div
+              key={post.id}
+              className="bg-white rounded shadow p-4 mb-4 border border-gray-300"
+            >
+              <h3 className="text-xl font-bold">{post.title}</h3>
+              <p className="text-gray-700">{post.content}</p>
+              <p className="text-sm text-gray-500 mt-2">
+                Created at: {new Date(post.createdAt).toLocaleString()}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500">Brak postów.</p>
+        )}
       </div>
     </div>
   );
