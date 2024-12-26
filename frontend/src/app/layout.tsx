@@ -4,8 +4,8 @@ import AOSInitializer from "./components/AOSInitializer";
 
 
 export const metadata: Metadata = {
-  title: "Local Services Booking Kujawsko-Pomorskie",
-  description: "Website about services and locals in Poland Kujawsko-Pomorskie",
+  title: "Local Services Booking Poland",
+  description: "Website about services and locals in Poland",
 };
 
 export default function RootLayout({

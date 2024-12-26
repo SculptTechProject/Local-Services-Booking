@@ -74,6 +74,37 @@ export default function DashboardClient() {
         </p>
       </section>
 
+      {/* Szukaj usługodawcy */}
+      <section className="mb-8 bg-white p-6 rounded shadow">
+        <h2 className="text-xl font-semibold text-emerald-700 mb-4">
+          Poszukaj usługodawcy
+        </h2>
+        <p className="text-gray-600"></p>
+        <div className="flexs flex-row gap-4">
+          <p className="mb-4">Wybierz kategorię usługi, której potrzebujesz:</p>
+          <div className="flex flex-wrap gap-2">
+            <button className="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full hover:bg-emerald-200 transition">
+              #hydraulik
+            </button>
+            <button className="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full hover:bg-emerald-200 transition">
+              #elektryk
+            </button>
+            <button className="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full hover:bg-emerald-200 transition">
+              #mechanik
+            </button>
+            <button className="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full hover:bg-emerald-200 transition">
+              #stolarz
+            </button>
+            <button className="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full hover:bg-emerald-200 transition">
+              #malarz
+            </button>
+            <button className="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full hover:bg-emerald-200 transition">
+              #ogrodnik
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Usługi */}
       <section className="mb-8 bg-white p-6 rounded shadow">
         <h2 className="text-xl font-semibold text-emerald-700 mb-4">

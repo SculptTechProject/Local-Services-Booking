@@ -38,7 +38,7 @@ export default function RegisterProvider() {
 
       const data = await res.json();
       console.log("Zarejestrowano pomyślnie:", data);
-      router.push("/login-provider");
+      router.push("/preregister-provider");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }catch (err: any) {
       setError(err.message);

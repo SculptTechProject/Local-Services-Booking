@@ -119,10 +119,43 @@ router.post("/register", async (req, res) => {
       [name, email, hashedPassword]
     );
 
+    const token = jwt.sign({ id: result.rows[0].id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+      res.cookie("token", token, {
+      httpOnly: true,
+      secure: false, // w produkcji: true + https
+      sameSite: "strict",
+      maxAge: 3600000, // 1h
+    });
+
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Database error" });
+  }
+});
+
+// Preregister update provider
+router.patch("/preregister", authMiddleware, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    // lub inny sposób, jeżeli trzymasz userId w innej zmiennej
+    const { region, serviceType } = req.body;
+
+    const result = await pool.query(
+      `UPDATE "Provider"
+       SET region = $1, servicetype = $2
+       WHERE id = $3
+       RETURNING *;`,
+      [region, serviceType, userId]
+    );
+
+    res.json({ provider: result.rows[0] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Database error" });
   }
 });
 

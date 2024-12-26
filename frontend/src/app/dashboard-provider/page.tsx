@@ -4,20 +4,45 @@ import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { useRouter } from "next/navigation";
 import Logout from "@/app/components/Logout";
+import LoadingScreen from "../components/Loadingscreen";
+
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 interface Provider {
   name: string;
+  region: string;
+  servicetype: string;
 }
 
 export default function ProviderDashboard() {
   const router = useRouter();
   const [provider, setProvider] = useState<Provider | null>(null);
   const [loading, setLoading] = useState(true);
+  const currentYear = new Date().getFullYear();
 
   useEffect(() => {
+    setLoading(true);
+
     fetch("http://localhost:5173/api/v1/providers/me", {
       method: "GET",
-      credentials: "include",
+      credentials: "include", // potrzebne, by wysłać ciasteczko
     })
       .then(async (res) => {
         if (!res.ok) {
@@ -26,16 +51,24 @@ export default function ProviderDashboard() {
         return res.json();
       })
       .then((data) => {
-        setProvider(data.provider);
+        const { provider } = data;
+
+        if (!provider.region || !provider.servicetype) {
+          router.push("/preregister-provider");
+        } else {
+          setProvider(provider);
+        }
       })
       .catch(() => {
         router.push("/login-provider");
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+      });
   }, [router]);
 
   if (loading) {
-    return <div>Ładowanie...</div>;
+    return <LoadingScreen />;
   }
 
   if (!provider) {
@@ -50,7 +83,8 @@ export default function ProviderDashboard() {
   };
 
   const chartData = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    year: currentYear,
+    labels: ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"],
     datasets: [
       {
         label: "Monthly Bookings",
@@ -60,13 +94,35 @@ export default function ProviderDashboard() {
     ],
   };
 
+  const recentBookings = [
+    { id: 1, customer: "Jan Kowalski", date: "2024-12-20", status: "Pending" },
+    { id: 2, customer: "Anna Nowak", date: "2024-12-19", status: "Completed" },
+    {
+      id: 3,
+      customer: "Piotr Zieliński",
+      date: "2024-12-18",
+      status: "Cancelled",
+    },
+  ];
+
+  const notifications = [
+    "Nowa rezerwacja od Jan Kowalski",
+    "Przypomnienie: Zaktualizuj swój profil",
+    "Twoja usługa ogrodnicza zdobyła 5-gwiazdkową recenzję!",
+  ];
+
   return (
     <div className="p-6 space-y-6">
       {/* Nagłówek */}
-      <h1 className="text-2xl font-bold">{provider.name}s Dashboard</h1>
-      <Logout />
+      <div className="flex flex-row gap-4 items-center justify-between">
+        <h1 className="text-2xl font-bold">{provider.name} Dashboard</h1>
+        <Logout />
+      </div>
+      <p className="text-sm text-gray-500">
+        Region: {provider.region}, Typ Usługi: {provider.servicetype}
+      </p>
 
-      {/* Statystyki w prostych divach */}
+      {/* Statystyki */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="p-4 bg-white rounded shadow border">
           <h2 className="text-sm font-medium text-gray-600">Total Bookings</h2>
@@ -75,7 +131,7 @@ export default function ProviderDashboard() {
 
         <div className="p-4 bg-white rounded shadow border">
           <h2 className="text-sm font-medium text-gray-600">Revenue</h2>
-          <p className="text-2xl font-bold">${stats.totalRevenue}</p>
+          <p className="text-2xl font-bold">{stats.totalRevenue}zł</p>
         </div>
 
         <div className="p-4 bg-white rounded shadow border">
@@ -92,7 +148,7 @@ export default function ProviderDashboard() {
       {/* Wykres */}
       <div className="bg-white rounded shadow border p-4">
         <h2 className="text-sm font-medium text-gray-600 mb-2">
-          Booking Trends
+          Booking Trends {chartData.year}
         </h2>
         <div className="h-[300px]">
           <Bar
@@ -103,6 +159,38 @@ export default function ProviderDashboard() {
             }}
           />
         </div>
+      </div>
+
+      {/* Ostatnie rezerwacje */}
+      <div className="bg-white rounded shadow border p-4">
+        <h2 className="text-sm font-medium text-gray-600 mb-2">
+          Recent Bookings
+        </h2>
+        <ul className="divide-y divide-gray-200">
+          {recentBookings.map((booking) => (
+            <li key={booking.id} className="py-2 flex justify-between">
+              <span>{booking.customer}</span>
+              <span className="text-sm text-gray-500">{booking.date}</span>
+              <span className="text-sm font-medium text-gray-700">
+                {booking.status}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Powiadomienia */}
+      <div className="bg-white rounded shadow border p-4">
+        <h2 className="text-sm font-medium text-gray-600 mb-2">
+          Notifications
+        </h2>
+        <ul className="list-disc list-inside space-y-2">
+          {notifications.map((note, index) => (
+            <li key={index} className="text-sm text-gray-700">
+              {note}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

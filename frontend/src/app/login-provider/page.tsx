@@ -47,7 +47,6 @@ export default function LoginProvider() {
           <h1 className="text-2xl font-bold text-gray-800 text-center">
             Logowanie
           </h1>
-
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
               <div className="bg-red-100 border border-red-300 text-red-700 p-3 rounded text-sm">
